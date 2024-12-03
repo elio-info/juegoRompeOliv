@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Puzzle Oliv: Construyendo recuerdos</title>
+        <link rel="stylesheet" href="stffs/stls.css">
+    </head>
+    <body onresize="displayDim('r');" onload="beginGame()">
+        <div id="cPuzInit" class="container">
+            <img id="img_init" style="display: block; width: 800px; height: 600px;" alt="" src="imgns/entrada.webp">
+            <div class="posc-fondo-div"><!-- div de opciones -->
+                <div id="btnInit"><!-- div inicio-->
+                    <button onclick="cambioDivEntrada('btnInit','btnSlctDiff')" >Inicio juego</button>
+                </div><!-- fin div inicio-->
+                <div id="btnSlctDiff" class="oculto"> <!-- div SetDiff-->
+                    <h2>Seccione dificultad del juego</h2>
+                    <button onclick="setDifficult(3)"> Sencillo [ Pan comido ] </button>
+                    <button onclick="setDifficult(5)"> Medio [ Pensar un poquito ] </button>
+                    <button onclick="setDifficult(6)"> Duro [ Uff... ] </button>
+                </div><!-- fin div SetDiff -->
+                <div id="btnSlctImgW" class="oculto"> <!-- div SetDiff-->
+                    <h2>Seccione dificultad del juego</h2>
+                    <button onclick="setImageWork(0)"> Casa </button>
+                    <button onclick="setImageWork(1)"> Feria </button>
+                    <button onclick="setImageWork(2)"> Acampar </button>
+                </div><!-- fin div SetImgWDiff -->
+            </div> <!-- fin div de opciones -->
+        </div><!-- fin cPuzzInit-->
+        <div id="centroJuego" class="container oculto"  > <!-- DIV Juego -->
+            <div id="puzzle"></div>
+            <div id="piezas"></div>
+        </div><!-- fin DIV Juego -->
+        <!-- <canvas id="canvasPuz" ></canvas> -->
+        <div  id="canvasPuzGuia" style="display: none; width: 200px; height: 100px;" alt=""></div>
+        
+        
+        <!-- acciones -->
+        <script src="jvscpt/jquery.min.js"></script>
+        <script src="jvscpt/dragdrop.jsx"></script>
+        <script src="jvscpt/gral.js"></script>
+    </body>
+</html>
