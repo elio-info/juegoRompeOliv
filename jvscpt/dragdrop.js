@@ -22,15 +22,21 @@ function createElement_Canvas(pieceWidth,pieceHeight,imag,indx=null,posX=0,posY=
   canvas_aux.width=pieceWidth+5;
   canvas_aux.height=pieceHeight+5;
   canvas_aux.style.border=' 1px solid gray';
+
+  let ctx=canvas_aux.getContext('2d');
   
-  if (indx) { //divididas
-    canvas_aux.id=indx;
-    canvas_aux.getContext('2d').drawImage( imag,
-        posX,posY,pieceWidth,pieceHeight,//inside Orig
-        0,0,pieceWidth,pieceHeight,//inside Copy       
-    ) ;
-  } else 
-    canvas_aux.getContext('2d').drawImage( imag,0,0) ;
+  var nImg=new Image()
+        nImg.src=imag.src
+        nImg.onload= function () {
+            if (indx) { //divididas
+                canvas_aux.id=indx;
+                ctx.drawImage( imag,
+                    posX,posY,pieceWidth,pieceHeight,//inside Orig
+                     0,0,pieceWidth,pieceHeight,//inside Copy       
+                 ) ;
+            } else 
+                canvas_aux.getContext('2d').drawImage(imag,0,0) ;
+        }
 
   return canvas_aux;
 }
@@ -176,3 +182,47 @@ function beginGame( ){
     return o;
 }
   
+
+const imageRoot='imgns/'
+const imgsW=[
+    'casa.jpg','entrada.jpg','feria.jpg','patio.jpg'
+]
+
+let cant_piezas_nvl=0,
+    imageWork
+
+function getImageSrc(posc){
+  let pp=new Image(); // document.createElement('img')
+    pp.src= imageRoot+'bckgrnds/puzz_'+imgsW[posc];
+return pp;
+}
+
+
+function createDiv_draggable(parent,index,clssNm,dragg=true,cnv=null){
+    const div = document.createElement('div');
+    div.className = clssNm;
+    div.id = `${parent.id}_${index}`;
+    div.draggable = dragg;
+    if (cnv) div.appendChild(cnv.imagCnx)
+    div.style.width=pieceWidth+5
+    div.style.height=pieceHeight+5
+    parent.appendChild(div);   
+}
+
+function fillWithDiv(){
+  let piezz= $('#piezas')[0],
+      puzz= $('#puzzle')[0]
+    for (let index = 0; index < cant_piezas_nvl; index++) {
+        createDiv_draggable(puzz,index,'placeholder',false);
+       // createDiv_draggable(piezz,index,'pieza',true,pieces_list_unsort[index]);
+       piezz.appendChild(pieces_list_unsort[index].imagCnx)
+    }
+}
+
+
+function initPuzzDragDop(imagPosc,difficulty){
+    cant_piezas_nvl=difficulty * difficulty
+    // set image on mainBoard
+    imageWork= getImageSrc(imagPosc)    
+}
+

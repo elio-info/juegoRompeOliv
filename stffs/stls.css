@@ -1,15 +1,16 @@
+
 #piezas {
     display: flex;
     flex-wrap: wrap;
-    width: 400px;
+    /* width: 400px; */
     margin: auto;
     justify-content: center;
 }
 
 #puzzle {
     border: 1px solid black;
-    width: 318px;
-    height: 495px;
+    /* width: 318px;
+    height: 495px; */
     display: flex;
     flex-wrap: wrap;
     margin: auto;
