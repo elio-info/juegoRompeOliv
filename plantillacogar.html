@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Puzzle Oliv: Construyendo recuerdos</title>
+        <link rel="stylesheet" href="stffs/bootstrap.min.css">
         <link rel="stylesheet" href="stffs/stls.css">
     </head>
     <body onresize="displayDim('r');" onload="beginGame()">
@@ -12,13 +13,13 @@
                     <button onclick="cambioDivEntrada('btnInit','btnSlctDiff')" >Inicio juego</button>
                 </div><!-- fin div inicio-->
                 <div id="btnSlctDiff" class="oculto"> <!-- div SetDiff-->
-                    <h2>Seccione dificultad del juego</h2>
+                    <h2 class="colorTags">Seccione dificultad del juego</h2>
                     <button onclick="setDifficult(3)"> Sencillo [ Pan comido ] </button>
                     <button onclick="setDifficult(5)"> Medio [ Pensar un poquito ] </button>
                     <button onclick="setDifficult(6)"> Duro [ Uff... ] </button>
                 </div><!-- fin div SetDiff -->
                 <div id="btnSlctImgW" class="oculto"> <!-- div SetDiff-->
-                    <h2>Seccione dificultad del juego</h2>
+                    <h2 class="colorTags">Seccione dificultad del juego</h2>
                     <button onclick="setImageWork(0)"> Casa </button>
                     <button onclick="setImageWork(1)"> Feria </button>
                     <button onclick="setImageWork(2)"> Acampar </button>

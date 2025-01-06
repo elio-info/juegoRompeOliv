@@ -1,6 +1,6 @@
-let difficulty=0
-let display_dim
-let imageWorkCanvas //canvas de la imagen princ
+// let difficulty=0
+// let display_dim
+// let imageWorkCanvas //canvas de la imagen princ
 
 let pieces_list=[] //list canvas de la imagen princ
     pieces_list_unsort=[];
@@ -12,6 +12,16 @@ let pieceHeight;
 let currentPiece;
 let currentDropPiece;
 
+
+const imageRoot='imgns/'
+const imgsW=[
+    'casa.jpg','entrada.jpg','feria.jpg','patio.jpg'
+]
+
+let cant_piezas_nvl=0,
+    imageWork
+
+
 function setDifficult(difficulty){
   this.difficulty=difficulty
   cambioDivEntrada('btnSlctDiff','btnSlctImgW')
@@ -19,8 +29,8 @@ function setDifficult(difficulty){
 
 function createElement_Canvas(pieceWidth,pieceHeight,imag,indx=null,posX=0,posY=0){
   let canvas_aux= document.createElement('canvas');
-  canvas_aux.width=pieceWidth+5;
-  canvas_aux.height=pieceHeight+5;
+  canvas_aux.width=pieceWidth+2;
+  canvas_aux.height=pieceHeight+2;
   canvas_aux.style.border=' 1px solid gray';
 
   let ctx=canvas_aux.getContext('2d');
@@ -79,16 +89,22 @@ function buildPieces() {
  * construyo matriz de imagenes a usar
  */
 function initEnviroment(){
+  
     // dim reduciendo a 1/3 para que quepan los 2
     red_w= Math.floor (this.display_dim.width_resp /3)
     red_h= Math.floor (this.display_dim.height_resp /3)
+    console.log(` ventana 1/3 w-${red_w},h-${red_h}`);
+    
     
     // cambio de dimensiones
+    setNewObjectSize('puzzle',red_w,red_h)
     setNewObjectSize('piezas',red_w,red_h)
 
-    // 
+    // pieces by difficulty 
     pieceWidth = Math.floor(red_w / this.difficulty);
-    pieceHeight = Math.floor(red_h / this.difficulty);
+    pieceHeight = Math.floor(red_h / this.difficulty); 
+    console.log(` dividen into 1/${this.difficulty} w-${pieceWidth},h-${pieceHeight}`);
+    
     puzzleWidth = pieceWidth * this.difficulty;
     puzzleHeight = pieceHeight * this.difficulty;
 
@@ -106,14 +122,16 @@ function initEnviroment(){
 
 
 function setImageWork(imgW){
-//   this.imageWork.src=imgsW[imgW]
+ cambioDivEntrada('cPuzInit','centroJuego')
+ 
+ //   this.imageWork.src=imgsW[imgW]
   initPuzzDragDop(imgW,this.difficulty)
 
 //   exijo contexto
     initEnviroment()
     fillWithDiv()
 
-  cambioDivEntrada('cPuzInit','centroJuego')
+ 
   let opo= $(`#canvasPuzGuia`)[0]
  
   opo.style["background-image"]=` url( ${imageWork.src})`
@@ -183,14 +201,6 @@ function beginGame( ){
 }
   
 
-const imageRoot='imgns/'
-const imgsW=[
-    'casa.jpg','entrada.jpg','feria.jpg','patio.jpg'
-]
-
-let cant_piezas_nvl=0,
-    imageWork
-
 function getImageSrc(posc){
   let pp=new Image(); // document.createElement('img')
     pp.src= imageRoot+'bckgrnds/puzz_'+imgsW[posc];
@@ -204,16 +214,28 @@ function createDiv_draggable(parent,index,clssNm,dragg=true,cnv=null){
     div.id = `${parent.id}_${index}`;
     div.draggable = dragg;
     if (cnv) div.appendChild(cnv.imagCnx)
-    div.style.width=pieceWidth+5
-    div.style.height=pieceHeight+5
+    div.width=pieceWidth
+    div.height=pieceHeight
     parent.appendChild(div);   
 }
 
 function fillWithDiv(){
   let piezz= $('#piezas')[0],
       puzz= $('#puzzle')[0]
+
+      let cuenta=1,
+        divContenedor=document.createElement('div')
+        divContenedor.id='divPuzz_'+cuenta
+
     for (let index = 0; index < cant_piezas_nvl; index++) {
-        createDiv_draggable(puzz,index,'placeholder',false);
+      
+        if ((index+1 % this.difficulty)==0) {
+          console.log(`hola`);
+          divContenedor=document.createElement('div')
+          divContenedor.id='divPuzz_'+(cuenta++)          
+        }
+
+       createDiv_draggable(divContenedor,index,'placeholder',false);// createDiv_draggable(puzz,index,'placeholder',false);
        // createDiv_draggable(piezz,index,'pieza',true,pieces_list_unsort[index]);
        piezz.appendChild(pieces_list_unsort[index].imagCnx)
     }

@@ -10,7 +10,7 @@ Flujo:
 
     [COGER Y ARRASTRAR ] se divide el centro en todas las filas y columnas del nivel. a un costado derecho las piezas que tiene que coger y arrastrar, forma desordenada.
 
-    [ ORGANIZAR ] se divide el centro en todas las filas y columnas del nivel. en cada una se ponen las fotos regadas y se resuelve:tocas una y cambias el borde (a rojo y 1.5px) marcando la seleccion. tocas el prox y entonces mueves las imagenes, las marcadas en su nueva posicion se ponen cambiadas (a verde y 1.5px por un momentico, despues vuelve a normal) y se desmarca
+    [ ORGANIZAR ] se divide el centro en todas las filas y columnas del nivel. en cada una se ponen las fotos regadas y se resuelve:tocas una y cambias el borde (a naranja y 1.5px) marcando la seleccion. tocas el prox y entonces mueves las imagenes, las marcadas en su nueva posicion se ponen cambiadas (a verde y 1.5px por un momentico, despues vuelve a normal) y se desmarca
 
     se mostrara una imagen guia a partir de que lo solicite
 }

@@ -1,4 +1,4 @@
-let difficulty=0
+let difficulty
 let display_dim
 let imageWorkCanvas //canvas de la imagen princ
 
