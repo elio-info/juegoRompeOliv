@@ -1,250 +1,139 @@
-// let difficulty=0
-// let display_dim
-// let imageWorkCanvas //canvas de la imagen princ
-
+let cant_piezas_nvl,
+    imageWork,
+    pctDvLvl
 let pieces_list=[] //list canvas de la imagen princ
-    pieces_list_unsort=[];
+    pieces_list_index=[],
+    pieces_list_index_unsort=[];
 let puzzleWidth;
 let puzzleHeight;
-let pieceWidth;
-let pieceHeight;
+let puzzSelected,puzzToSwap;
 
-let currentPiece;
-let currentDropPiece;
-
-
-const imageRoot='imgns/'
+const imageRoot='imgns/bckgrnds/puzz_'
 const imgsW=[
     'casa.jpg','entrada.jpg','feria.jpg','patio.jpg'
 ]
 
-let cant_piezas_nvl=0,
-    imageWork
 
-
-function setDifficult(difficulty){
-  this.difficulty=difficulty
-  cambioDivEntrada('btnSlctDiff','btnSlctImgW')
-}
-
-function createElement_Canvas(pieceWidth,pieceHeight,imag,indx=null,posX=0,posY=0){
-  let canvas_aux= document.createElement('canvas');
-  canvas_aux.width=pieceWidth+2;
-  canvas_aux.height=pieceHeight+2;
-  canvas_aux.style.border=' 1px solid gray';
-
-  let ctx=canvas_aux.getContext('2d');
-  
-  var nImg=new Image()
-        nImg.src=imag.src
-        nImg.onload= function () {
-            if (indx) { //divididas
-                canvas_aux.id=indx;
-                ctx.drawImage( imag,
-                    posX,posY,pieceWidth,pieceHeight,//inside Orig
-                     0,0,pieceWidth,pieceHeight,//inside Copy       
-                 ) ;
-            } else 
-                canvas_aux.getContext('2d').drawImage(imag,0,0) ;
-        }
-
-  return canvas_aux;
-}
-
-function setNewObjectSize(obj,n_w,n_h) {
-  let elmnt_clss=$(`#${obj}`)[0].style
-  elmnt_clss.width=n_w;
-  elmnt_clss.height=n_h;
-}
-
-function buildPieces() {
-    let xPos = 0;
-	let yPos = 0;
-	for (i = 0; i < cant_piezas_nvl; i++) {
-		piece = {};
-		piece.sx = xPos;
-		piece.sy = yPos;
-        // image canvas context 2d 
-        imagInside=createElement_Canvas(
-            pieceWidth,pieceHeight,
-            imageWork,
-            'puzz_'+i,
-            xPos,yPos
-        );
-        piece.imagCnx=imagInside
-        // empacar imagenes
-		pieces_list.push(piece);
-		xPos += pieceWidth;
-		if (xPos >= puzzleWidth) {
-			xPos = 0;
-			yPos += pieceHeight;
-		}
-	}
-}	
-// 
-
+// pasos 1 Iniciar juego y cambios de pantalla
 /**
- * establesco dimensiones en funcion del nivel
- * instauro la imagen que usar
- * construyo matriz de imagenes a usar
+ * The function cambioDivEntrada hides the current div and shows the next div using jQuery fadeIn and
+ * fadeOut methods.
+ * @param divActual - The `divActual` parameter represents the ID of the current div that you want to hide or fade out.
+ * @param divSiguiente - The `divSiguiente` parameter in the `cambioDivEntrada` function represents the ID of the next div that you want to display or show after hiding the current div.
  */
-function initEnviroment(){
-  
-    // dim reduciendo a 1/3 para que quepan los 2
-    red_w= Math.floor (this.display_dim.width_resp /3)
-    red_h= Math.floor (this.display_dim.height_resp /3)
-    console.log(` ventana 1/3 w-${red_w},h-${red_h}`);
-    
-    
-    // cambio de dimensiones
-    setNewObjectSize('puzzle',red_w,red_h)
-    setNewObjectSize('piezas',red_w,red_h)
-
-    // pieces by difficulty 
-    pieceWidth = Math.floor(red_w / this.difficulty);
-    pieceHeight = Math.floor(red_h / this.difficulty); 
-    console.log(` dividen into 1/${this.difficulty} w-${pieceWidth},h-${pieceHeight}`);
-    
-    puzzleWidth = pieceWidth * this.difficulty;
-    puzzleHeight = pieceHeight * this.difficulty;
-
-    // imagen
-    imageWorkCanvas=createElement_Canvas(
-        this.display_dim.width_resp,this.display_dim.height_resp,
-        imageWork)
-
-    // matriz
-    buildPieces();
-    
-    // unsort
-    pieces_list_unsort=shuffleArray(pieces_list)
+function cambioDivEntrada(divActual, divSiguiente) {
+  // ocultar div actual
+  $('#' + divActual).fadeOut()
+  // mostar proximo div
+  $('#' + divSiguiente).fadeIn()
 }
+// fin paso 1 Inicio juego y cambios de pantalla
 
-
-function setImageWork(imgW){
- cambioDivEntrada('cPuzInit','centroJuego')
- 
- //   this.imageWork.src=imgsW[imgW]
-  initPuzzDragDop(imgW,this.difficulty)
-
-//   exijo contexto
-    initEnviroment()
-    fillWithDiv()
-
- 
-  let opo= $(`#canvasPuzGuia`)[0]
- 
-  opo.style["background-image"]=` url( ${imageWork.src})`
-  opo.width=imageWork.width
-  opo.height=imageWork.height
-}
+// paso 2 Dificultad
 /**
- * Vaciar el elemento que se pase por parametro
- * @param {*} elto id del elemento
+ * The function setDifficult sets the difficulty level and changes the appearance of a button.
+ * @param difficulty - The `difficulty` parameter is a value that represents the level of difficulty for a particular task on game. It's  a numerical value.
  */
-function vaciarElto(elto) {
-    let quitarDatos = document.getElementById(elto)
-    // 1-vaciar
-    while (quitarDatos.firstChild) {
-      // The list is LIVE so it will re-index each call
-      quitarDatos.removeChild(quitarDatos.firstChild);
-    }
+  function setDifficult(difficulty){
+    pctDvLvl=difficulty
+    cambioDivEntrada('btnSlctDiff','btnSlctImgW')
+  }
+// fin paso 2 Dificultad
+
+// paso 3 Sellcion de foto
+
+  /**
+   * The function `setImageWork` sets up a puzzle game with a specified image and difficulty level.
+   * @param imgW - The `imgW` parameter in the `setImageWork` function is used to specify the index of the image to be set for the puzzle game.
+   */
+  function setImageWork(imgW){
+ 
+  // poner imagen en tag
+    imageWork=document.getElementById("myImg");
+
+  // poner imagen en tag
+    imageWork.src= imageRoot+ imgsW[imgW]
+
+    buildSpace()//organizar
   }
 
-  function cambioDivEntrada(divActual, divSiguiente) {
-    // ocultar div actual
-    $('#' + divActual).fadeOut()
-    // mostar proximo div
-    $('#' + divSiguiente).fadeIn()
+  function buildSpace(params) {
+    // creando medidas de figuraPuzz
+    puzzleWidth=Math.floor(pct.naturalWidth / pctDvLvl)+1 //rws
+    puzzleHeight =Math.floor(pct.naturalHeight / pctDvLvl)+1 //clns
+
+                
+    createListIndexOrden(pieces_list_index,pctDvLvl)// crear orden de index
+    shuffleArray(pieces_list_index,pieces_list_index_unsort) //formar relajo
+
+    createCanvasArray(puzzleWidth,puzzleHeight)
+
+   
+    //ver el div
+    cambioDivEntrada('cPuzInit','centroJuego')
+
+    let opo= $(`#canvasPuzGuia`)[0]
+  
+    opo.style["background-image"]=` url( ${imageWork.src})`
+    opo.width=imageWork.width
+    opo.height=imageWork.height
+  }
+// fin paso 3 Sellcion de foto
+
+  
+  function Salir(){
+    let opcion="https://elio-info.github.io/olivares",
+      opcion02="http://www.olivelandfarmsrhvr.com/"
+
+    window.location.href=opcion
   }
 
  /**
- *  Mostrar las dimensiones del ente/etiqueta a la que se llama
- * @param {String} event_call event who call's 
+  * The function `shuffleArray` shuffles the elements of an array randomly.
+  * @param o - The parameter `o` in the `shuffleArray` function is an array that contains the elements to be shuffled. When you call the `shuffleArray` function and pass an array as an argument, it will shuffle the elements of that array and return the shuffled array.
+  * @returns The `shuffleArray` function returns the input array `o` after shuffling its elements
+  * randomly.
+  */
+  function shuffleArray(o,r){
+    r=Array.from(o)
+    for(var j, x, i = r.length; i; j = parseInt(Math.random() * i), x = r[--i], r[i] = r[j], r[j] = x);
+    console.log(`relajo:`,r); 
+    return r;
+}
+
+
+/**
+ * The function `createListIndexOrden` generates a list of indexes based on the specified level.
+ * @param list_toCreate - The `list_toCreate` parameter is an array that will be populated with index values based on the specified level (`lvl`).
+ * @param lvl - The `lvl` parameter in the `createListIndexOrden` function represents the level of the list to be created. It is used to determine the number of elements in the list by calculating `Math.pow(lvl, 2)`.
  */
-function displayDim(event_call){
-
-    function pageWidth() {
-      return window.innerWidth != null? window.innerWidth : document.documentElement &&
-      document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body != null
-      ? document.body.clientWidth : null;
-      }
-      function pageHeight() {
-      return window.innerHeight != null? window.innerHeight : document.documentElement &&
-      document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body !=
-      null? document.body.clientHeight : null;
-      }  
-  
-    this.display_dim={
-      width_resp:pageWidth(),
-      height_resp:pageHeight()
-    }
-    console.log(event_call,this.display_dim);    
-  }
-  
-function beginGame( ){
-    displayDim('l')
-
-    let ig=$('#img_init')[0].style
-        ig.width =  (this.display_dim.width_resp * .9) +'px'
-        ig.height = (this.display_dim.height_resp * .9)+'px'
-  }
-  
-  
-  function Salir(){
-    window.location.href='index.html'
-  }
-
-  function shuffleArray(o){
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-}
-  
-
-function getImageSrc(posc){
-  let pp=new Image(); // document.createElement('img')
-    pp.src= imageRoot+'bckgrnds/puzz_'+imgsW[posc];
-return pp;
+function createListIndexOrden(list_toCreate, lvl) {
+  for (let index = 0; index < Math.pow(lvl,2); index++) 
+  list_toCreate.push(index);
+  console.log(`orden:`,list_toCreate);  
 }
 
+/**
+ * The function creates an array of canvas pieces based on the puzzle width and height.
+ * @param puzzleWidth - The `puzzleWidth` parameter represents the width of each puzzle piece in the puzzle grid.
+ * @param puzzleHeight - The `puzzleHeight` parameter in the `createCanvasArray` function represents the height of each puzzle piece in the canvas grid that is being created. It is used to calculate the vertical position of each puzzle piece within the grid.
+ */
+function createCanvasArray(puzzleWidth,puzzleHeight){
+  let total=0
+  for (let index_Row = 0; index_Row < pctDvLvl; index_Row++) {                  
 
-function createDiv_draggable(parent,index,clssNm,dragg=true,cnv=null){
-    const div = document.createElement('div');
-    div.className = clssNm;
-    div.id = `${parent.id}_${index}`;
-    div.draggable = dragg;
-    if (cnv) div.appendChild(cnv.imagCnx)
-    div.width=pieceWidth
-    div.height=pieceHeight
-    parent.appendChild(div);   
-}
+      for (let index_Column = 0; index_Column < pctDvLvl; index_Column++){
+              // table with canvas
+              // guardo ordenado lo que hago y muestro
+              pieces_list.push(
+                  {
+                      'colm':index_Column * puzzleWidth,//moverte por ancho
+                      'rw':index_Row * puzzleHeight // moverte por alto
+                  } 
+              
+          )//fin push
 
-function fillWithDiv(){
-  let piezz= $('#piezas')[0],
-      puzz= $('#puzzle')[0]
-
-      let cuenta=1,
-        divContenedor=document.createElement('div')
-        divContenedor.id='divPuzz_'+cuenta
-
-    for (let index = 0; index < cant_piezas_nvl; index++) {
-      
-        if ((index+1 % this.difficulty)==0) {
-          console.log(`hola`);
-          divContenedor=document.createElement('div')
-          divContenedor.id='divPuzz_'+(cuenta++)          
-        }
-
-       createDiv_draggable(divContenedor,index,'placeholder',false);// createDiv_draggable(puzz,index,'placeholder',false);
-       // createDiv_draggable(piezz,index,'pieza',true,pieces_list_unsort[index]);
-       piezz.appendChild(pieces_list_unsort[index].imagCnx)
-    }
-}
-
-
-function initPuzzDragDop(imagPosc,difficulty){
-    cant_piezas_nvl=difficulty * difficulty
-    // set image on mainBoard
-    imageWork= getImageSrc(imagPosc)    
-}
-
+      } //fin index_Column
+  }//fin index_Row
+}  
+  

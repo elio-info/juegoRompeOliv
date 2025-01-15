@@ -5,12 +5,14 @@
         <link rel="stylesheet" href="stffs/bootstrap.min.css">
         <link rel="stylesheet" href="stffs/stls.css">
     </head>
-    <body onresize="displayDim('r');" onload="beginGame()">
+    <body >
         <div id="cPuzInit" class="container">
             <img id="img_init" style="display: block; width: 800px; height: 600px;" alt="" src="imgns/entrada.webp">
             <div class="posc-fondo-div"><!-- div de opciones -->
                 <div id="btnInit"><!-- div inicio-->
-                    <button onclick="cambioDivEntrada('btnInit','btnSlctDiff')" >Inicio juego</button>
+                    <button onclick="cambioDivEntrada('btnInit','btnSlctDiff')" >
+                        Inicio juego
+                    </button>
                 </div><!-- fin div inicio-->
                 <div id="btnSlctDiff" class="oculto"> <!-- div SetDiff-->
                     <h2 class="colorTags">Seccione dificultad del juego</h2>
@@ -26,12 +28,40 @@
                 </div><!-- fin div SetImgWDiff -->
             </div> <!-- fin div de opciones -->
         </div><!-- fin cPuzzInit-->
-        <div id="centroJuego" class="container oculto"  > <!-- DIV Juego -->
-            <div id="puzzle"></div>
-            <div id="piezas"></div>
+        <div id="centroJuego" class="container oculto "  > <!-- DIV Juego -->
+            <table width="1400px" heigth="1020px">
+                <tr> 
+                    <td colspan="3"  height="220px" class="tabla_td_fondo td_centro_verticalfondo" >
+                        <table >
+                            <tr id="coger1">arriba</tr>
+                        </table>
+                    </td>
+                <tr>
+                    <td width="300px" height="600px" class="tabla_td_fondo td_centrovertical_drch">
+                        <table >
+                            <tr id="coger2">izquierda</tr>
+                        </table>
+                    </td>
+                    <td width="800px" height="600px" style="background-color: rgb(26, 219, 106);"></td>
+                    <td width="300px" height="600px" class="tabla_td_fondo td_centrovertical_izq">
+                        <table >
+                            <tr id="coger4">derecha</tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" height="220px" class="tabla_td_fondo td_centro_verticaltope">
+                        <table >
+                            <tr id="coger4">abajo</tr>
+                        </table>
+                    </td>
+                </tr> 
+            </table>
         </div><!-- fin DIV Juego -->
         <!-- <canvas id="canvasPuz" ></canvas> -->
-        <div  id="canvasPuzGuia" ></div>
+        <div  id="canvasPuzGuia" >
+            <img id="myImg" style="display: block;" widt="600"height="450" alt="Imagen de ver." src="">
+        </div>
         
         <!-- style="display: none; width: 200px; height: 100px;" -->
         <!-- acciones -->

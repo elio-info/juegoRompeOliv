@@ -1,7 +1,7 @@
 se trabajaran
     + 3 niveles de dificultad [ division de 3x3,5x5,6x6 ], se escoge desde el Inicio
-    + 4 fotos para escoger
-    + las fotos se dividen en elo interno
+    + 4 fotos para escoger, preferentemente de 800X600,para no ocupar tanto espacio visual
+    + las fotos se dividen en lo interno
     + se mostrara una imagen guia en la construccion de la imagen
 
 Flujo: 
@@ -9,6 +9,7 @@ Flujo:
     al dar click en el boton de iniciar, se oculta el boton y se muestra una miniatura de los niveles en los que se jugara. seleccionado el nvl, se oculta y se muestra en miniatura las fotos a las que puede hacerle la construccion. seleccionado, se pasa a Jugar.
 
     [COGER Y ARRASTRAR ] se divide el centro en todas las filas y columnas del nivel. a un costado derecho las piezas que tiene que coger y arrastrar, forma desordenada.
+    La estructuraesta formada por una tabla que contiene:en su centro la figura a formar, en derredor las figuras trozadas para irlas asignando.
 
     [ ORGANIZAR ] se divide el centro en todas las filas y columnas del nivel. en cada una se ponen las fotos regadas y se resuelve:tocas una y cambias el borde (a naranja y 1.5px) marcando la seleccion. tocas el prox y entonces mueves las imagenes, las marcadas en su nueva posicion se ponen cambiadas (a verde y 1.5px por un momentico, despues vuelve a normal) y se desmarca
 

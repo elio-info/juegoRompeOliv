@@ -3,6 +3,28 @@
     background-color: ghostwhite;
 }
 
+/* regiones de tablas */
+
+.tabla_td_fondo{
+    background-color: aqua;
+}
+.td_centro_verticaltope{
+    text-align: center;
+    vertical-align: top;
+}
+.td_centrovertical_drch{
+    text-align: right;
+    vertical-align: center;
+}
+.td_centrovertical_izq{
+    text-align: left;
+    vertical-align: center;
+}
+.td_centro_verticalfondo{
+    text-align: center;
+    vertical-align: bottom;
+}
+/* fin regiones de tablas */
 #piezas {
     display: flex;
     flex-wrap: wrap;
